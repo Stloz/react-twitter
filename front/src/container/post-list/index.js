@@ -23,6 +23,7 @@ import {
   requestReducer,
   REQUEST_ACTION_TYPE,
 } from "../../util/request";
+import { useWindowListeren } from "../../util/useWindowListeren";
 
 const PostItem = lazy(() => import("../post-item"));
 
@@ -78,11 +79,21 @@ export default function Container() {
 
   useEffect(() => {
     getData();
+
+    const intevalId = setInterval(() => getData(), 5000);
+
+    return clearInterval(intevalId);
   }, []);
 
   // if (status === null) {
   //   getData();
   // }
+
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  useWindowListeren("pointermove", (e) => {
+    setPosition({ x: e.clientX, y: e.clientY });
+  });
 
   return (
     <Grid>
